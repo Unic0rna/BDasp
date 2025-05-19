@@ -25,8 +25,23 @@ namespace EscolaEcommerce.Controllers
         [HttpPost]
         public IActionResult CadastrarAluno(Aluno aluno)
         {
-            _alunoRepositorio.CadastrarAluno(aluno);
-            return RedirectToAction(nameof(Principal));
+            int linhasAfetadas = _alunoRepositorio.CadastrarAluno(aluno);
+            
+            if ( linhasAfetadas > 0)
+            {
+                TempData["Mensagem"] = "Aluno cadastrado com sucesso.";
+                TempData["Classe"] = "alert alert-success";
+                return RedirectToAction(nameof(Principal));
+            }
+
+            else
+            {
+                TempData["Mensagem"] = "O aluno já existe no sistema";
+                TempData["Classe"] = "alert alert-danger";
+                return View();
+            }
+
+            
         }
 
         public IActionResult EditarAluno(int id)
